@@ -30,7 +30,7 @@ is not the current client path.
 | Reference interval text | `referenceRange.text`. |
 | Result date, otherwise collection time | `effectiveDateTime`; result date also becomes `issued`. |
 | Requisition organization, otherwise examiner | `performer.display`. |
-| Requisition CPR and patient name | `subject.identifier` and display; missing CPR can become an observation-ID hash under the CPR namespace, a known defect. |
+| Requisition CPR and patient name | `subject.identifier` and display; missing or blank CPR omits the identifier. No synthetic value is placed in the CPR namespace. |
 | Analysis guidance and pathology text | `note`; HTML is stripped with limited entity decoding. |
 
 All lab observations use category `laboratory`, including microbiology and pathology.
@@ -42,8 +42,9 @@ Source: `/app/hjemmemaalingerborger/api/v1/maalinger`, documents collection.
 ID is `hm-` plus sanitized date and type/name. Status is final and category vital-signs.
 Type or name becomes code text; date becomes effectiveDateTime. A numeric value with
 a unit becomes Quantity; otherwise value and unit are joined as a string. Source is
-preserved in a note. Subject is the `current` logical patient. Missing measurement names
-can violate required `Observation.code`; this is not a validated Vital Signs profile.
+preserved in a note. Subject is the `current` logical patient. Blank type falls back to a nonblank name. If neither is available, `code` carries
+the standard data-absent-reason extension with value `unknown`; the measurement value
+is retained. This is not a validated Vital Signs profile.
 
 ## Condition
 
@@ -63,7 +64,8 @@ per course key. ID is `enc-{contact key}`, with contact and course identifiers.
 Status is finished if source status contains Finished or an end date exists, planned
 if status contains planned, otherwise in-progress. Dates map to period. Unit details
 map to serviceProvider display and a composite identifier. Subject is a logical CPR
-reference. Required class is not populated by the mapper.
+reference. Required `class` carries the standard data-absent-reason extension with value
+`unknown`, because the source does not establish an encounter class.
 
 ## DocumentReference
 
@@ -86,8 +88,9 @@ populate dosage, reasonCode, effectivePeriod, and dateAsserted.
 
 Card status maps active/missing → active, completed → completed, stopped/ended → stopped,
 entered-in-error → entered-in-error, otherwise unknown. Detail status instead maps
-negative consent → not-taken, otherwise active. Neither standalone branch populates
-required subject. Offsetless card dates are interpreted as UTC; unparsable dates are omitted.
+negative consent → not-taken, otherwise active. Both standalone branches populate subject using the session-scoped logical
+patient identifier (`https://www.sundhed.dk/patient`, value `current`). This is not a
+globally usable patient identity. Offsetless card dates are interpreted as UTC; unparsable dates are omitted.
 
 ## MedicationRequest
 
@@ -101,7 +104,8 @@ Prescription status maps afsluttet → completed; aktiv, åben, open → active;
 unknown. Product name, strength, and form are joined for medication text. Prescription
 and ordination IDs are identifiers. Prescription/created date maps to authoredOn,
 cause to note, dosage to dosageInstruction, and validity dates to dispenseRequest.validityPeriod.
-The mapper omits required subject in both branches. Prescription retrieval is best effort.
+Both branches populate subject using the session-scoped logical patient identifier
+(`https://www.sundhed.dk/patient`, value `current`). Prescription retrieval is best effort.
 
 ## Immunization
 
@@ -118,13 +122,15 @@ leave status unset. Planned vaccinations are not mapped.
 
 Sources: `/app/billedbeskrivelserborger/api/v1/billedbeskrivelser/henvisninger/`
 and `/app/billedbeskrivelserborger/api/v1/billedbeskrivelser/henvisning/`, with
-referral/study selectors. The service combines response `svar` arrays, losing some
-top-level referral, requester, producer, and additional-information fields.
+referral/study selectors. The service passes each complete referral response to the mapper, preserving
+its top-level referral, requester, producer, and additional-information fields when
+aggregating results.
 
 ImagingStudy ID is `img-{examination ID or image ID}`; status is available. Examination
 date/name populate started/description. A minimal series and instance use source IDs
 as UIDs, optional modality code, body-site display, and image title. These are not
-verified DICOM UIDs. Subject and SOP class are missing; modality may also be missing.
+verified DICOM UIDs. Subject is the session-scoped logical current patient. SOP class is still
+missing; modality may also be missing.
 
 DiagnosticReport ID is `dr-{report ID or referral ID}`; status is final, category uses
 the observation-category imaging code, and code is report name/type or Billedbeskrivelse.
@@ -135,8 +141,10 @@ only. No DICOM retrieval endpoint or image pixels are exposed.
 
 ## Appointment
 
-Source: POST `/app/aftalerborger/api/v1/aftaler/cpr`. ID is a new random UUID with `apt-`
-prefix on each mapping. Source document ID is the business identifier. Status is booked;
+Source: POST `/app/aftalerborger/api/v1/aftaler/cpr`. When a nonblank source document ID exists, ID is `apt-` plus a deterministic
+name-based UUID derived from the document identifier namespace and value. Repeated
+reads retain the same ID; the source document ID remains the business identifier.
+Missing or blank document IDs still use a random UUID fallback. Status is booked;
 type/title populate serviceType and description; timestamps become start/end.
 Patient, performer, and location are all represented as accepted participants, with
 logical patient identifier or organization/address display. Participants are conditional

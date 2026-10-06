@@ -1,9 +1,11 @@
 # Source evidence
 
-Repository: `dhroxy`. Reviewed commit:
+Repository: `dhroxy`. Base commit:
 `d1d4c2fe0651bb576fa9246cae85674d0b8cddf8`. Review date: 2026-10-06.
-The source working tree was clean when inspected. This guide was authored in a separate
-folder; no dhroxy code or upstream patient records were changed.
+The initial review used a clean checkout. This revision also documents the local mapping
+corrections listed in `source-manifest.json` under `workingTreeChanges`, applied after
+the base commit. File digests describe that reviewed working tree, not the unmodified
+commit. No upstream patient records were accessed or changed.
 
 `source-manifest.json` in the guide repository contains SHA-256 digests for the reviewed
 Kotlin files and supporting documents, plus the resource/search inventory. Run

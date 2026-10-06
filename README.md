@@ -1,7 +1,8 @@
 # Dhroxy FHIR implementation guide
 
 FHIR R4 (4.0.1) guide derived from `dhroxy` commit
-`d1d4c2fe0651bb576fa9246cae85674d0b8cddf8`, inspected on 2026-10-06.
+`d1d4c2fe0651bb576fa9246cae85674d0b8cddf8` plus the local mapping corrections
+recorded in `source-manifest.json`, reviewed on 2026-10-06.
 
 Start with [the guide](input/pagecontent/index.md), [API behavior](input/pagecontent/api.md),
 [resource mappings](input/pagecontent/mappings.md), and [known gaps](input/pagecontent/conformance.md).
@@ -55,7 +56,13 @@ Its blue/green palette and three selected SVG icons come from the requested
 [EPF Patient Empowerment reference](https://www.eu-patient.eu/policy/Policy/patient-empowerment/).
 See [visual asset attribution](THIRD-PARTY-NOTICES.md). The assets are served locally;
 the rendered guide does not fetch styles or icons from the reference site.
+The theme also bundles `dnk.svg`, required by the upstream template when online
+terminology resolves the Denmark jurisdiction to a flag. This avoids a CI-only
+missing-image error that offline builds did not expose.
 Edit the local theme, not the Publisher-generated `template/` or `output/` folders.
+The local `fragment-pagebegin.html` overrides the header status markup from the pinned
+base template so the title, release label, version, and jurisdiction form a centred
+block. Keep this override in sync when upgrading `fhir2.base.template`.
 
 ## Scope and maintenance
 

@@ -38,7 +38,7 @@ Description: "Draft Encounter conformance target based on dhroxy mappings. Curre
 * ^status = #draft
 * id 1..1
 * identifier ^short = "Contact-period and course keys."
-* class ^short = "Required by R4; missing from the current mapper."
+* class ^short = "Class unknown: represented with a data-absent-reason extension."
 * serviceProvider ^short = "Logical unit identifier and display."
 
 Profile: DhroxyDocumentReference
@@ -61,7 +61,7 @@ Description: "Draft MedicationStatement conformance target based on dhroxy mappi
 * ^status = #draft
 * id 1..1
 * medication[x] ^short = "Medication text, optionally ATC and active-substance coding."
-* subject ^short = "Required by R4; missing from standalone mapper output."
+* subject ^short = "Session-scoped current patient logical reference."
 * dosage ^short = "Source dosage and administration text."
 * medication[x] only CodeableConcept
 
@@ -73,7 +73,7 @@ Description: "Draft MedicationRequest conformance target based on dhroxy mapping
 * ^status = #draft
 * id 1..1
 * medication[x] ^short = "Ordination medication or prescription product description."
-* subject ^short = "Required by R4; missing from current mapper output."
+* subject ^short = "Session-scoped current patient logical reference."
 * identifier ^short = "Ordination, drug-medication, or prescription identifiers."
 * intent = #order
 * medication[x] only CodeableConcept
@@ -96,7 +96,7 @@ Title: "Dhroxy ImagingStudy"
 Description: "Draft ImagingStudy conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
-* subject ^short = "Required by R4; missing from current mapper output."
+* subject ^short = "Session-scoped current patient logical reference."
 * series.instance.sopClass ^short = "Required by R4 when an instance is present; mapper omits it."
 * status = #available
 
@@ -118,7 +118,7 @@ Title: "Dhroxy Appointment"
 Description: "Draft Appointment conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
-* identifier ^short = "Source document identifier; resource ID is random."
+* identifier ^short = "Source document identifier; stable UUID-based resource ID when present."
 * participant ^short = "Patient, performer, and location represented as participants."
 * status = #booked
 

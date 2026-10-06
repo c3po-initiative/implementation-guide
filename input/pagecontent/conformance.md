@@ -12,21 +12,36 @@ Terminology and tooling dependencies are pinned for reproducible compilation. No
 IPS, IPA, DK Core, or national certification is implied. The source's IPA test records
 warnings and a Markdown report; it does not fail on conformance gaps.
 
-## Implemented output gaps
+## Corrected mapping findings
+
+The reviewed working tree includes these corrections after the original source commit:
+
+* MedicationStatement (card and detail), MedicationRequest (ordination and prescription),
+  and ImagingStudy now populate the session-scoped logical current patient.
+* Missing or blank lab CPR values no longer produce fabricated CPR identifiers;
+  available patient display text is retained.
+* Encounter class and unnamed home-measurement codes explicitly carry the standard
+  data-absent-reason extension with value `unknown`, without inventing clinical codes.
+* Appointment IDs are stable across reads when a nonblank source document ID exists.
+* Imaging aggregation retains each referral's metadata alongside its own reports and studies.
+
+These changes do not resolve the remaining output gaps below. `current` remains a
+session-local convention and must be resolved before combining data across patients.
+See [source evidence](provenance.html) for the working-tree baseline.
+
+## Remaining output gaps
 
 | Area | Source evidence and consequence | Integration / correction target |
 | --- | --- | --- |
-| MedicationStatement and MedicationRequest | Standalone mappers omit required `subject`. | Resolve the session patient and populate subject before claiming R4 conformance. Examples explicitly add subject. |
-| Encounter | Mapper omits required `class`. | Supply a supported class or a standard data-absent-reason extension; do not infer inpatient/outpatient status. Example supplies a synthetic class. |
-| ImagingStudy | Missing required `subject` and instance `sopClass`; modality can also be absent. Source IDs are used as DICOM UIDs without verification. | Validate identifiers and populate mandatory clinical/DICOM elements; example adds synthetic subject, modality system, UID, and SOP class. |
+| ImagingStudy | Missing required instance `sopClass`; modality can also be absent. Source IDs are used as DICOM UIDs without verification. | Validate identifiers and populate mandatory clinical/DICOM elements; example supplies a resolved synthetic patient reference, modality system, UID, and SOP class. |
 | Condition | Required subject is only populated if e-journal CPR is present, including conditions from the separate diagnosis source. | Require a resolved patient context. |
 | Immunization | Unknown active status can leave required status unset; missing effectuation time leaves required occurrence absent. | Represent unknown information explicitly without inventing an administration. `intended` is not an R4 Immunization status. |
 | Appointment | Status is always booked; start/end and all participants depend on source availability. | Check required participant and appointment invariants before returning output. |
-| Home Observation | Missing both source type and name can leave required code empty. Category alone does not satisfy the FHIR Vital Signs profile. | Retain available text and validate; do not claim Vital Signs profile support. |
-| Resource identity | Several mappers truncate a slug to 64 characters then prepend a prefix; some never cap IDs. Random fallback IDs and always-random Appointment IDs prevent stable identity. | Enforce the total R4 ID length and preserve business keys. ReferralMapper already caps and hashes overflow. |
+| Home Observation | Unknown code is now represented explicitly. Category alone does not satisfy the FHIR Vital Signs profile. | Retain available text and validate; do not claim Vital Signs profile support. |
+| Resource identity | Several mappers truncate a slug to 64 characters then prepend a prefix; some never cap IDs. Random fallback IDs still prevent stable identity when business keys are unavailable. Appointment IDs now remain stable when a document ID exists. | Enforce the total R4 ID length and preserve business keys. ReferralMapper already caps and hashes overflow. |
 | Bundle identifiers | Several mappers and the summary prefix non-UUID resource IDs with `urn:uuid:`. Search providers rebuild bundles, but summary output retains this issue. | Use actual UUID URNs or valid absolute resource URLs. |
 | Imaging references | DiagnosticReport provider drops ImagingStudy entries; mapper references point into the discarded bundle. | Include referenced studies with valid fullUrls or provide resolvable references. |
-| Logical subject values | `current` is session-scoped; lab mapper can put an observation-ID hash under the CPR namespace when CPR is missing. | Do not interpret these as verified CPR numbers or join records globally by `current`. |
+| Logical subject values | `current` is session-scoped. Missing lab CPR values now omit the identifier. | Do not interpret these as verified CPR numbers or join records globally by `current`. |
 | Consent flags | Negative consent maps to medication stopped/not-taken and vaccination not-done. | These are observed mappings, not reliable clinical inferences about treatment or administration. Preserve provenance when interpreting. |
 | Summary | Non-UUID URNs, collision-prone laboratory IDs, unsupported absence assertions, missing narrative and occurrence. | See the [summary page](summary.html); validate independently against a chosen IPS release. |
 | Transactions | Outer headers are not forwarded; duplicate query keys collapse; no universal decoding. | Use direct searches for authenticated date ranges until dispatch is corrected. |
@@ -60,9 +75,10 @@ warnings and a Markdown report; it does not fail on conformance gaps.
    tests. Compilation and synthetic-example validation do not validate the live server.
 
 See `validation-results.md` in the repository for checks performed while creating this
-version. The examples are corrected target illustrations. All patient subject additions,
-the Encounter class, imaging scaffolding corrections, and summary narrative/UUID changes
-are intentional additions, not evidence that the source mapper emits those fields.
+version. The examples are corrected target illustrations. Resolved patient references, the illustrative coded Encounter class, imaging scaffolding
+corrections, and summary narrative/UUID changes remain intentional example additions.
+The mapper emits session-scoped logical subjects and an explicitly unknown Encounter class
+as described above; examples do not establish live-output conformance.
 
 Reference requirements: [FHIR R4 resource definitions](https://hl7.org/fhir/R4/resourcelist.html),
 [document bundles](https://hl7.org/fhir/R4/documents.html), and
