@@ -77,3 +77,4 @@ No publication or deployment is performed by this project.
 Specification references: [FHIR R4 ImplementationGuide](https://hl7.org/fhir/R4/implementationguide.html),
 [FHIR Shorthand and SUSHI](https://fshschool.org/docs/), and
 [HL7 IG Publisher](https://github.com/HL7/fhir-ig-publisher).
+
