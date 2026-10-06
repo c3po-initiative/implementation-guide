@@ -1,0 +1,12 @@
+{
+  "name": "dhroxy-implementation-guide",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Source-derived FHIR R4 implementation guide for dhroxy",
+  "scripts": {
+    "build": "sushi .",
+    "check": "python3 scripts/check-guide.py",
+    "test": "npm run build && npm run check"
+  },
+  "devDependencies": { "fsh-sushi": "3.20.1" }
+}

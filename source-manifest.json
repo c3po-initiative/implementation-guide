@@ -1,0 +1,172 @@
+{
+  "repository": "dhroxy",
+  "commit": "d1d4c2fe0651bb576fa9246cae85674d0b8cddf8",
+  "reviewDate": "2026-10-06",
+  "providers": {
+    "Patient": [
+      [
+        "name",
+        "string"
+      ],
+      [
+        "identifier",
+        "token"
+      ]
+    ],
+    "Observation": [
+      [
+        "date",
+        "date"
+      ],
+      [
+        "category",
+        "token"
+      ]
+    ],
+    "Condition": [],
+    "Encounter": [],
+    "DocumentReference": [],
+    "MedicationStatement": [
+      [
+        "status",
+        "token"
+      ],
+      [
+        "_sourceId",
+        "string"
+      ],
+      [
+        "identifier",
+        "token"
+      ]
+    ],
+    "MedicationRequest": [
+      [
+        "identifier",
+        "token"
+      ]
+    ],
+    "Immunization": [
+      [
+        "status",
+        "token"
+      ]
+    ],
+    "ImagingStudy": [
+      [
+        "identifier",
+        "token"
+      ],
+      [
+        "study",
+        "token"
+      ]
+    ],
+    "DiagnosticReport": [
+      [
+        "identifier",
+        "token"
+      ],
+      [
+        "study",
+        "token"
+      ]
+    ],
+    "Appointment": [
+      [
+        "date",
+        "date"
+      ]
+    ],
+    "Organization": [
+      [
+        "identifier",
+        "token"
+      ]
+    ],
+    "CarePlan": [],
+    "ServiceRequest": []
+  },
+  "files": {
+    "docs/fhir-mapping-notes.md": "9e6c91c3f11e60c04ae437537f9bfcc04966754a776be0c23ed8d2b5b4f42fae",
+    "readme.md": "58f2b4b6d7cc0d8fd8fbbf777656f5dabf1bc8cab5d04fc2a67b52c515ec2505",
+    "src/main/kotlin/dhroxy/DhroxyApplication.kt": "d826e1d5f63f5db7bc79cefca2971ee67de7ad309409394ce5aab00610f4d41e",
+    "src/main/kotlin/dhroxy/client/SundhedClient.kt": "edb394f0023f46878eed73f5d39330968bec38701f292aa434667765508821e3",
+    "src/main/kotlin/dhroxy/config/FhirConfig.kt": "7777a8d2a47c9d6e6afb1e11b75b02505886896b3bc68ea1dcc6445240295c2a",
+    "src/main/kotlin/dhroxy/config/FhirRestfulServerConfig.kt": "433d46319a0208127492f15885b40e5fb74ee6c77c2aee6afd3f1b530fe68766",
+    "src/main/kotlin/dhroxy/config/McpServerConfig.kt": "df67c592c3d3ecae030005c1489fad98c5ad185b3a4ab004ebf7365bf305ee7a",
+    "src/main/kotlin/dhroxy/config/SundhedClientProperties.kt": "22fdbfb50d511c4c298d8eddef0d839c0f8ee2ec57bbaa14ec88945c7239162f",
+    "src/main/kotlin/dhroxy/config/WebClientConfig.kt": "31022c8178a6fede4860448a9b8f2876180e0aa59b400140f00a689e4b254828",
+    "src/main/kotlin/dhroxy/controller/AppointmentProvider.kt": "c01ea02adb0a32bc349bbcb81c239c0366fbf4b5e8ce8c04a9d2b16d9ef9cfbc",
+    "src/main/kotlin/dhroxy/controller/CarePlanProvider.kt": "dbd8511874dd24c6931b2743b768966f824b5675a303543924d24cd015694b8b",
+    "src/main/kotlin/dhroxy/controller/ConditionProvider.kt": "fb8b52f5adc118ded5c3845139830ed4c8f323db027947bd616e9d5594777973",
+    "src/main/kotlin/dhroxy/controller/DiagnosticReportProvider.kt": "224433b23e2cef29adc0f75a383954433b317221fad91a1c201afe4419a0788c",
+    "src/main/kotlin/dhroxy/controller/DocumentReferenceProvider.kt": "6710ab800e392d2c72bf32bebbf9144a5b1101e83bb015acbeb405f6ba774b1c",
+    "src/main/kotlin/dhroxy/controller/EncounterProvider.kt": "e80692021f6153291818982dc87bdbaa87bfab97397ea37a184aa6471fec7662",
+    "src/main/kotlin/dhroxy/controller/HealthKitController.kt": "6efffa7545588d09d99813ca8cd6001601417bc6cd19f8406189477e77acee4d",
+    "src/main/kotlin/dhroxy/controller/ImagingStudyProvider.kt": "b341148dc44e63a44de79ac85e32073c5d291399be618b3d74a3fe5efd725f3a",
+    "src/main/kotlin/dhroxy/controller/ImmunizationProvider.kt": "178f306411308e137b88257095ba7c9209a6865e1d5b9ab0e20f381e237b5532",
+    "src/main/kotlin/dhroxy/controller/MedicationRequestProvider.kt": "cee583979d38c1e1d1a8a276bfae613269edf1eb8bda9d50fffdaea96254e865",
+    "src/main/kotlin/dhroxy/controller/MedicationStatementProvider.kt": "13b29276262a31ff527a283c66c8dab3cef1bd34d904b37229243d8a0b6ab737",
+    "src/main/kotlin/dhroxy/controller/ObservationProvider.kt": "d928b80b0018c3f5d926f8e7851c055eebb42378e4fbe2c9899e81e5c0bbe9bb",
+    "src/main/kotlin/dhroxy/controller/OrganizationProvider.kt": "7813f2636a57506ccf38e4a3d7e32ab202137936682bbfa17a3058584023676c",
+    "src/main/kotlin/dhroxy/controller/PatientProvider.kt": "921c24b8a979bf701e80ecbf2e7e53456449d2454c3f805ec74feac9155229d9",
+    "src/main/kotlin/dhroxy/controller/ServiceRequestProvider.kt": "07a2d4461055b38738ccf8664c0367e6eb7ddaf7d18070a80f80a13b8739fa9f",
+    "src/main/kotlin/dhroxy/controller/TransactionProvider.kt": "dd30a95938b4c3ec356414e2ca79076d15be52ee7df48bd7afc800fe63e8cc78",
+    "src/main/kotlin/dhroxy/mapper/AppointmentMapper.kt": "2342472273eee4144b8465aad9347e54a29e1d4bfb83ae633cf976110fd22e02",
+    "src/main/kotlin/dhroxy/mapper/CarePlanMapper.kt": "d7d59674966daa04d88c3504a14d52d15f56656be668617557b7b952fa9fa710",
+    "src/main/kotlin/dhroxy/mapper/ConditionMapper.kt": "0b6359881dbad1990672e181a80d72dffec9715e12eca1ce1568a43664a6798b",
+    "src/main/kotlin/dhroxy/mapper/DocumentReferenceMapper.kt": "5730875f8460200876e957fe3c9049f267423af6e2b7298c53b287cb5f3951ab",
+    "src/main/kotlin/dhroxy/mapper/EncounterMapper.kt": "7ddff2cf1d23f2e258f986a1cc592462933cac94e738081c74c2bcf4faecf74d",
+    "src/main/kotlin/dhroxy/mapper/HomeMeasurementMapper.kt": "d146097852fbcbe6ed9af9a83b4baaa928a9d9337965e518d1fc2b930dd3205b",
+    "src/main/kotlin/dhroxy/mapper/ImagingMapper.kt": "7635497f40d193c08743f393d356cb023ca5196fcf8d60b604218d9f03cad544",
+    "src/main/kotlin/dhroxy/mapper/LabMapper.kt": "2632089d66146606309ea65b4b8ea486fce67d78838733322513dc4f4d275681",
+    "src/main/kotlin/dhroxy/mapper/MedicationCardMapper.kt": "e83de3821ed7d254922bebf034f0ae147f27045cd13d1da9f1e64ea56d51f4ec",
+    "src/main/kotlin/dhroxy/mapper/MedicationOverviewMapper.kt": "741e87a41eb00c8b83727abfab8515c4a753639f6bd2601eeb4e86dcb81d6c8f",
+    "src/main/kotlin/dhroxy/mapper/MedicationRequestMapper.kt": "9d3b410a56f2a0f3aa5f3eebfcc88e561f28e494d359be05f6b3fa75f115acc1",
+    "src/main/kotlin/dhroxy/mapper/OrganizationMapper.kt": "5e3257040a0ef611d01511d81a00ce8cee22ab3c7974e843c5b326385e3428a3",
+    "src/main/kotlin/dhroxy/mapper/PatientMapper.kt": "c92d0a97381e0858be441d0c4fc56419fcb4d41f0a64746e057061b2aa22db26",
+    "src/main/kotlin/dhroxy/mapper/PatientSummaryMapper.kt": "bc07a33ea6b3390bc5fe4fcde81cdef690ab4c3ff7af90a41dd8a6af21fa1ef8",
+    "src/main/kotlin/dhroxy/mapper/ReferralMapper.kt": "092eb30aeba4e7a649693ca3cec5144c205a21f7003cb51ff0e57c4b502342f9",
+    "src/main/kotlin/dhroxy/mapper/VaccinationMapper.kt": "11c3ef7f4b6c6c0eca86e970b3dfdfc0adf8c8aa942cec4b4556167cdc553367",
+    "src/main/kotlin/dhroxy/mcp/CallToolResultFactory.kt": "8fe5cadf67cb2c71bf00746ba054664e8a1d3d1b128f2726526fc8ed85b17e5f",
+    "src/main/kotlin/dhroxy/mcp/Interaction.kt": "3b5a3ac5b27e86ac70106a5c5df7155c9045a2c6bc1bb0f87ee1f90c7c3980b3",
+    "src/main/kotlin/dhroxy/mcp/McpBridge.kt": "70b35868b0c04b6a41a1d1dd4ac86a3c5ab62640fe126ab10233080fb48b7b09",
+    "src/main/kotlin/dhroxy/mcp/RequestBuilder.kt": "81bead92109f3114ce0bc70e02977a90a1af0c52de14c2f7b0337fc0e498ea5b",
+    "src/main/kotlin/dhroxy/mcp/ToolFactory.kt": "f03f8df4faa70c74c7ad82dc3e5fb743f7fe60eb4d1e7b58f817ca3d98e474f4",
+    "src/main/kotlin/dhroxy/model/AppointmentModels.kt": "7cc8455506fcad5469923ec86c06e7991ab0fe75b3d6d445dc1f376f51d1c9c4",
+    "src/main/kotlin/dhroxy/model/CarePlanModels.kt": "25b93ce75c10b7271410e7437c4d9bab2a0880c5591dfa89e3acaf1e15b6c52f",
+    "src/main/kotlin/dhroxy/model/CoreOrganizationModels.kt": "d4dcf569f3d36655a33796eada94eb4b50823dd409b0dc307f1933a63e6c5d78",
+    "src/main/kotlin/dhroxy/model/DiagnoseModels.kt": "1bee88140b221f20b1446fa54ea157d6d7774bc6c7c129cc8e7cf035a79256ae",
+    "src/main/kotlin/dhroxy/model/EjournalModels.kt": "58f73259762232dc82722b3ce9caf018825a8250e9e57a1241a9ae2278e1433d",
+    "src/main/kotlin/dhroxy/model/HealthKitModels.kt": "40507aa61d9b97cc3d52e50328a1e02fc8f7b9b0b8b4a4f1739a8100fccb1939",
+    "src/main/kotlin/dhroxy/model/HenvisningModels.kt": "115e5a884c9a61ae7d5b9bf2ee5dfbf5f4d286fe752e949d47ba52c0e9ce38e7",
+    "src/main/kotlin/dhroxy/model/HomeMeasurementModels.kt": "040088a689ee0fe01e15d3486dd2ba1f79e6407c942680fc073b0d41b962e62a",
+    "src/main/kotlin/dhroxy/model/ImagingModels.kt": "5491deb6bbf06c9835fbac37f898fb66a4a4e978a2ed288bae844bdd96d85f8d",
+    "src/main/kotlin/dhroxy/model/LabModels.kt": "65a4f99cf400857c641e15d9db6b2f04b7d51f568c998c8b79b570832588fb51",
+    "src/main/kotlin/dhroxy/model/MedicationCardModels.kt": "7eb06a8db640e27ec100437f525334433a405c7aaba9e393eb5445a1b88ac4d5",
+    "src/main/kotlin/dhroxy/model/MedicationOverviewModels.kt": "4d098cbc13d5599d27f8d3f81f3934f07910af7b9d162e7533a9d38a4791f709",
+    "src/main/kotlin/dhroxy/model/MinLaegeOrganizationResponse.kt": "13a19d5f88f5c71bc3933786b08909187b5b0dcfd5329c6684ca2b74b48e0410",
+    "src/main/kotlin/dhroxy/model/OrdinationDetailsModels.kt": "ca3530369f539f17398d254463fe6932f970245a7a4c74594a08aa91871f5201",
+    "src/main/kotlin/dhroxy/model/PersonSelectionModels.kt": "0df703af9e36c55f31d89fcedc7285d2e363484ddfb50444afa7158cfaa3431a",
+    "src/main/kotlin/dhroxy/model/VaccinationModels.kt": "431284f696b63b94bb36953c32585415b6b8a8fc28628db3d517eefdc34a66dd",
+    "src/main/kotlin/dhroxy/service/AppointmentService.kt": "362dc03a6fd8620bbbc5157566283f838ce41553ac15144d9e868b61c8636415",
+    "src/main/kotlin/dhroxy/service/CarePlanService.kt": "e8b4c483a80a1ff7500405f93814ce35d67e84f9347c02e6be5795385cd2af1f",
+    "src/main/kotlin/dhroxy/service/ConditionService.kt": "73ea744cc2dea01b4309d9e7624bf5203c38cbd78281d010025e4b25a95bb4e2",
+    "src/main/kotlin/dhroxy/service/DocumentReferenceService.kt": "c8386001c4bfb839f635e966eb45957112cc0ee86f5701c6bb6e360e85939a34",
+    "src/main/kotlin/dhroxy/service/EncounterService.kt": "cb135a2289efe6973277f3e383369a7fe88f8bf1ccda3af5f6438ac31b81797a",
+    "src/main/kotlin/dhroxy/service/HealthKitService.kt": "9165516c9ecb20ba6dae5d70ab3049e687c8fb5ee4ee6e48adab30586eb248f8",
+    "src/main/kotlin/dhroxy/service/HomeMeasurementService.kt": "d25103972d28ee2b0da0ef51e54a64f82220ea05eb95cd8910632a34029a7001",
+    "src/main/kotlin/dhroxy/service/ImagingService.kt": "3ca758900feed9fa1d7347cc81fb5e753047482829c4b7215732c68c0a814ffc",
+    "src/main/kotlin/dhroxy/service/MedicationCardService.kt": "e1618b2c9582837a8d924c089af02b04dddd39fef07e23b98698447f6d3bcf63",
+    "src/main/kotlin/dhroxy/service/MedicationOverviewService.kt": "dc688e020e2aee0dd7c872edd460291b701d3f1163967db0c7294118ad9d0f1e",
+    "src/main/kotlin/dhroxy/service/MedicationRequestService.kt": "bdddeedbb41adc3e7731c3005efb0609443eca7f4649924a90d1141c451a7d2c",
+    "src/main/kotlin/dhroxy/service/ObservationService.kt": "b3d2174471d64e3a238a5c1f10eef9d87d39fdd10d233225ba065eb8c60c245b",
+    "src/main/kotlin/dhroxy/service/OrganizationService.kt": "bee73b633dfd2ed68a661abb2a9dfb5bcfb66a7d6115847a97e4ec5dc13e5171",
+    "src/main/kotlin/dhroxy/service/PatientService.kt": "afb0a7417fcde12d71b6bbac08f3515511e263a28efabdcf9aafef61c601af86",
+    "src/main/kotlin/dhroxy/service/PatientSummaryService.kt": "e0f8a8add0f5144d22150f289caf7d0253dad4d8b287e933a8bc9f7f920c7e8b",
+    "src/main/kotlin/dhroxy/service/ReferralService.kt": "83ee9497062b0bb555b440d6b9084cd83a53e0d151220fc81f55de7cc5be7281",
+    "src/main/kotlin/dhroxy/service/VaccinationService.kt": "562314c5b806245ce3a4bcd0a45f79fe2ab37975caa6268909ed18be4507394c",
+    "src/test/kotlin/dhroxy/conformance/IpaConformanceTest.kt": "eddf8d4e5c509007ffee0c8038d6dd99376d36b4c9b70c2fd96b24438f09a6e5"
+  }
+}

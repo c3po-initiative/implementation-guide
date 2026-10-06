@@ -1,0 +1,9 @@
+{
+  "name": "dhroxy.fhir.template",
+  "version": "0.1.0",
+  "type": "fhir.template",
+  "license": "Apache-2.0",
+  "description": "Dhroxy presentation theme with the EPF reference palette and selected EPF icons; see THIRD-PARTY-NOTICES.md for asset attribution.",
+  "base": "fhir2.base.template",
+  "dependencies": { "fhir2.base.template": "0.1.0" }
+}

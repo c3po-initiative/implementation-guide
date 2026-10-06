@@ -1,0 +1,14 @@
+node_modules/
+fsh-generated/
+input-cache/
+output/
+temp/
+template/
+qa.json
+qa.html
+qa.txt
+.DS_Store
+*.log
+__pycache__/
+validation-output/
+*.db

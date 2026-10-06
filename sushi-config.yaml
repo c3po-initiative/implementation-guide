@@ -1,0 +1,45 @@
+id: dk.dhroxy.fhir
+canonical: https://example.org/fhir/dhroxy
+name: DhroxyImplementationGuide
+title: Dhroxy FHIR Implementation Guide
+description: FHIR R4 resource mappings, API behavior, and conformance targets derived from the dhroxy source code.
+status: draft
+version: 0.1.0
+fhirVersion: 4.0.1
+language: en
+copyrightYear: 2026+
+releaseLabel: CI Build
+license: Apache-2.0
+publisher:
+  name: Dhroxy contributors
+jurisdiction: urn:iso:std:iso:3166#DK
+dependencies:
+  hl7.terminology.r4: 7.0.1
+  hl7.fhir.uv.tools.r4: 1.1.2
+  hl7.fhir.uv.extensions.r4: 5.2.0
+parameters:
+  show-inherited-invariants: false
+pages:
+  index.md:
+    title: Home
+  api.md:
+    title: API and search behavior
+  mappings.md:
+    title: Resource mappings
+  terminology.md:
+    title: Identifiers and terminology
+  summary.md:
+    title: Patient summary
+  conformance.md:
+    title: Conformance and known gaps
+  provenance.md:
+    title: Source evidence
+menu:
+  Home: index.html
+  API: api.html
+  Mappings: mappings.html
+  Terminology: terminology.html
+  Patient summary: summary.html
+  Conformance: conformance.html
+  Artifacts: artifacts.html
+  Source evidence: provenance.html
