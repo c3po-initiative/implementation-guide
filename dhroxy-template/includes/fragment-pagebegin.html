@@ -1,8 +1,9 @@
-{% comment %}Based on fhir2.base.template 0.1.0; override the guide status markup only.{% endcomment %}
+{% comment %}Based on fhir2.base.template current (2026-10-06); override the guide status markup only.{% endcomment %}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE HTML>
-{% assign baselang = include.lang | slice: 0,2 %}
-{% if "ar;dv;fa;ha;he;iw;ji;ps;sd;ug;ur;yi;" contains baselang %}
+{% assign baselang = include.lang | default: '' | slice: 0,2 | downcase %}
+{% assign rtl_langs = "ar,dv,fa,ha,he,iw,ji,ps,sd,ug,ur,yi" | split: "," %}
+{% if baselang != "" and rtl_langs contains baselang %}
 {% assign dir = 'rtl' %}
 {% else %}
 {% assign dir = 'ltr' %}
@@ -24,8 +25,8 @@
     <link href="{{site.data.info.assets}}assets/css/pygments-manni.css" rel="stylesheet"/>
     <link href="{{site.data.info.assets}}assets/css/jquery-ui.css" rel="stylesheet"/>
   	<link href="{{site.data.info.assets}}assets/css/prism.css" rel="stylesheet" />
+    <link href="{{site.data.info.assets}}assets/css/liquid.css" rel="stylesheet" />
     <link href="{{site.data.info.assets}}assets/css/project.css" rel="stylesheet"/>
-  	<link href="{{site.data.info.assets}}assets/css/cqf.css" rel="stylesheet" />
     {% include fragment-css.html lang=include.lang %}
 
     <script type="text/javascript" src="fhir-table-scripts.js"> </script>
@@ -46,7 +47,9 @@
   </head>
   <body onload="document.body.style.opacity='1'">
 {% assign label = {{site.data.pages[localPage].label}} | split: '.0' %}
-	  <script src="{{site.data.info.assets}}assets/js/prism.js"></script>
+	  <script type="text/javascript" src="{{site.data.info.assets}}assets/js/prism.js"></script>
+	  <script type="text/javascript" src="{{site.data.info.assets}}assets/js/prism-fhirpath.js"></script>
+	  <script type="text/javascript" src="{{site.data.info.assets}}assets/js/prism-cql.js"></script>
     <script type="text/javascript" src="{{site.data.info.assets}}assets/js/mermaid.js"></script>
     <script type="text/javascript" src="{{site.data.info.assets}}assets/js/mermaid-init.js"></script>
     <style type="text/css">h2{--heading-prefix:"{{site.data.info.headingOffset}}{{label}}"}
@@ -83,7 +86,7 @@
       </div> <!-- /container -->
     </div>  <!-- /segment-header -->
 
-    <div id="segment-navbar" class="segment">  <!-- segment-navbar -->
+    <div id="segment-navbar" class="segment" data-fhir="generated">  <!-- segment-navbar -->
       <div id="stripe"> </div>
       <div class="container">  <!-- container -->
         <!-- HEADER CONTENT -->
@@ -113,7 +116,7 @@
     </div>  <!-- /segment-navbar -->
     <!--status-bar-->
 {% assign shownav = site.data.info.shownav | downcase | slice: 0 %}
-    <div id="segment-breadcrumb" class="segment">  <!-- segment-breadcrumb -->
+    <div id="segment-breadcrumb" class="segment" data-fhir="generated">  <!-- segment-breadcrumb -->
       <div class="container">  <!-- container -->
         <ul class="breadcrumb">
           {{site.data.pages[localPage].breadcrumblang[include.lang]}}

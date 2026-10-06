@@ -28,6 +28,20 @@ To generate the full HTML guide and FHIR package, use the HL7 IG Publisher:
 java -jar /path/to/publisher.jar -ig ig.ini
 ```
 
+Before pushing template changes, also check CI's template trust rules:
+
+```sh
+java -jar /path/to/publisher.jar -ig ig.ini -auto-ig-build \
+  -package-cache-folder "$HOME/.fhir/packages" \
+  -repo https://github.com/c3po-initiative/implementation-guide/tree/main \
+  -target https://build.fhir.org/ig/c3po-initiative/implementation-guide/branches/main/
+```
+
+The cache directory must already exist. The repository URL supplies the generated
+CI banner link; these arguments generate local output and do not deploy it.
+Ordinary local builds do not enforce CI's
+template trust restrictions, so they cannot establish that a template will run in CI.
+
 The Publisher requires Java, Jekyll, and network access for packages and terminology.
 Inspect `output/qa.html` before publication. To validate examples independently:
 
@@ -42,7 +56,7 @@ pass `--tx https://tx.fhir.org/r4` to request external terminology validation, o
 
 The rendered guide is `output/en/index.html`; the distributable FHIR package is
 `output/package.tgz`. These generated files are ignored by Git. This project uses
-the local `dhroxy-template`, based on `fhir2.base.template#0.1.0`; use a recent Publisher (tested with 2.3.5) and validator
+the local `dhroxy-template`, based on `fhir2.base.template#current`; use a recent Publisher (tested with 2.3.5) and validator
 (tested with 6.9.5). `input/ignoreWarnings.txt` contains no suppression rules: no validation
 messages are suppressed. Offline builds can use `-tx n/a`, with incomplete terminology
 verification reported in the QA output.
@@ -60,17 +74,19 @@ The theme also bundles `dnk.svg`, required by the upstream template when online
 terminology resolves the Denmark jurisdiction to a flag. This avoids a CI-only
 missing-image error that offline builds did not expose.
 Edit the local theme, not the Publisher-generated `template/` or `output/` folders.
-The local `fragment-pagebegin.html` overrides the header status markup from the pinned
+The local `fragment-pagebegin.html` overrides the header status markup from the upstream
 base template so the title, release label, version, and jurisdiction form a centred
-block. The theme also overrides the Markdown page include, profile/history layouts, and search
-page to fix heading hierarchy, a duplicate unclosed heading, and stray closing tags in
-`fhir2.base.template#0.1.0`. Authored Markdown pages omit their top-level title because
+block. The theme also overrides the Markdown page include to supply a top-level heading.
+Authored Markdown pages omit their top-level title because
 the page include supplies it; the home page supplies its own hero heading. Keep these
 overrides in sync when upgrading the base template.
-The local `assets/js/lang-redirects.js` override fixes the base template's early-return
-bug: unsupported browser languages fall back to the first published language (currently
-English), while query strings and anchors are preserved. The Publisher's root
-`index.html` therefore redirects to `en/index.html`, including for Danish browsers.
+The official current base template fixes the redirect bug in the published `0.1.0`
+package: unsupported browser languages fall back to English, preserving query strings
+and anchors. The Publisher's root `index.html` therefore redirects to `en/index.html`,
+including for Danish browsers. The script comes from the trusted upstream package;
+do not add a local JavaScript override, which makes this theme untrusted in CI.
+`current` follows upstream builds rather than a fixed release. Recheck QA and theme
+overrides after upstream changes, and pin a release when one includes these fixes.
 
 
 ## Scope and maintenance
@@ -93,4 +109,3 @@ No publication or deployment is performed by this project.
 Specification references: [FHIR R4 ImplementationGuide](https://hl7.org/fhir/R4/implementationguide.html),
 [FHIR Shorthand and SUSHI](https://fshschool.org/docs/), and
 [HL7 IG Publisher](https://github.com/HL7/fhir-ig-publisher).
-

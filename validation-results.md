@@ -74,7 +74,7 @@ The counts include known terminology/dependency and best-practice findings; no w
 were suppressed. Unverified source terminology and absent source data remain explicit
 limitations rather than invented codes or a blanket conformance assertion.
 
-## CI-matched Publisher verification
+## Prior verification with CI's Publisher version
 
 Publisher **2.3.5** completed the final build at 23:04 CEST on 2026-10-06 with
 **0 resource errors, 20 warnings, 37 informational messages, 0 HTML findings,
@@ -96,12 +96,30 @@ package exists. These do not appear as resource or HTML QA errors; the standard
 The published main-branch report was rechecked during this work and still described
 the earlier 19:43 UTC build. These corrections are local until committed and built by CI.
 
-## Root language redirect
+## Root language redirect and CI template trust
 
-The `fhir2.base.template#0.1.0` language script returned before its fallback when the
-browser language did not match the first published language. A local asset override
-corrects that behavior, retains query strings and anchors, and handles directory URLs.
-Seven executable JavaScript cases passed. The generated root HTML and generated script
-were also exercised together for `da-DK`, resolving the main-branch root URL to
-`branches/main/en/index.html`. Publisher 2.3.5 confirmed the override is included in
-the site; QA remains **0 errors, 20 warnings, 37 information messages, 0 broken links**.
+The published `fhir2.base.template#0.1.0` language script returned before its fallback
+when the browser language did not match the first published language. The initial local
+JavaScript override passed redirect tests and a normal local Publisher build, but failed
+in CI: `Template has file extensions: [.js]`. Normal local builds do not enforce the
+template trust restrictions of `-auto-ig-build`; the earlier verification was incomplete.
+
+The local script is now removed. The theme depends on the trusted official
+`fhir2.base.template#current`, whose upstream script supplies the redirect fix. The
+reviewed package has build date `20261006212434`. Redundant profile/history/search
+overrides were removed because upstream includes their fixes; the custom header and
+Markdown heading override were rebased onto that same upstream template.
+
+Four executable checks of the upstream script passed: `da-DK`, `en`, `en-GB`, and
+`fr-FR`, including query-string and fragment preservation. All resolved root
+`index.html` to `en/index.html`. The source consistency check also passed.
+
+Publisher **2.3.5**, with **`-auto-ig-build`** and online terminology, completed at
+23:59 CEST on 2026-10-06: **0 resource errors, 17 warnings, 37 informational messages,
+0 HTML findings, 0 invalid XHTML pages, and 0 broken links**. It checked 2,278 HTML
+files and 331,327 links. The generated root HTML and upstream script were exercised
+together for a Danish browser, preserving query strings and anchors. Both
+`output/package.tgz` and `output/full-ig.zip` were produced and checked as readable.
+No findings were suppressed. See the README's CI-mode command, including the repository
+URL needed for valid CI banner links during a local run. Changes remain local until
+committed and built by the hosted CI service.
