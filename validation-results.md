@@ -6,8 +6,7 @@ Reviewed on 2026-10-06 against dhroxy commit
 
 ## Source and compilation
 
-* SUSHI **3.20.1**: **0 errors**, one environment warning because its npm latest-version
-  check was unavailable. The installed version is pinned.
+* SUSHI **3.20.1**: **0 errors, 0 warnings** in the CI QA follow-up. The installed version is pinned.
 * **48 generated artifacts**, including 21 profiles and 21 standalone examples.
   Patient, Organization, Observation, Condition, Encounter, DiagnosticReport, and
   ServiceRequest inherit DK Core; the other resource profiles retain their prior parents.
@@ -47,7 +46,23 @@ The published QA report at 13:37:29 UTC on 2026-10-06 reported **0 validation er
 `assets/images/dnk.svg`. The local theme supplies that image. Those historical counts
 precede the DK Core alignment and must not be treated as this revision's validation.
 
-## Current Publisher build
+## Published CI QA follow-up
+
+The report fetched from the main-branch CI build was generated on 2026-10-06 at
+19:47:09 UTC by Publisher **2.3.5**. It still contained the pre-DK-Core examples and
+reported **11 resource validation errors, 24 warnings, and 33 informational messages**.
+All 11 errors referenced the missing publisher extension
+`http://hl7.org/fhir/tools/StructureDefinition/type-profile-constraints`.
+The HTML section separately listed 64 heading errors, 142 malformed-markup warnings,
+and 21 duplicate-ID warnings; these are not included in the resource-error count.
+
+Corrections: update `hl7.fhir.uv.tools.r4` from 1.1.2 to **1.3.0**, which supplies the
+extension; remove duplicate authored page titles; use one top-level page heading;
+and override the pinned base template's duplicate/unclosed history heading, extra
+profile closing paragraph, and unmatched search-page tags. The local build now uses
+the same Publisher **2.3.5** as CI. No warning suppression was added.
+
+## Prior local Publisher build
 
 HL7 IG Publisher **2.3.4**, online terminology at `https://tx.fhir.org/r4`, completed
 successfully: **0 errors, 21 warnings, 37 informational messages, 0 broken links,
@@ -58,3 +73,25 @@ The local QA report is `output/qa.html`; the rendered guide is `output/en/index.
 The counts include known terminology/dependency and best-practice findings; no warnings
 were suppressed. Unverified source terminology and absent source data remain explicit
 limitations rather than invented codes or a blanket conformance assertion.
+
+## CI-matched Publisher verification
+
+Publisher **2.3.5** completed the final build at 23:04 CEST on 2026-10-06 with
+**0 resource errors, 20 warnings, 37 informational messages, 0 HTML findings,
+0 invalid XHTML pages, and 0 broken links**. It checked 2,250 HTML files and
+330,615 links. Both the standard FHIR package and the full guide archive were produced.
+
+The 20 remaining resource warnings comprise six external DICOM/RadLex terminology
+resolution findings, four source-local identifier namespace findings, four ambiguous
+inherited canonical-version findings, two older direct dependencies, two optional
+Observation performer recommendations, one inherited experimental binding, and one
+base Observation profile without a direct example. No clinical values were invented
+and no warnings were suppressed to clear these findings.
+
+The Publisher also logs nonfatal upstream diagnostics for an example Composition
+snapshot in a dependency and an optional combined-package attempt before the standard
+package exists. These do not appear as resource or HTML QA errors; the standard
+`output/package.tgz` is present and readable.
+
+The published main-branch report was rechecked during this work and still described
+the earlier 19:43 UTC build. These corrections are local until committed and built by CI.

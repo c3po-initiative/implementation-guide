@@ -42,7 +42,7 @@ pass `--tx https://tx.fhir.org/r4` to request external terminology validation, o
 
 The rendered guide is `output/en/index.html`; the distributable FHIR package is
 `output/package.tgz`. These generated files are ignored by Git. This project uses
-the local `dhroxy-template`, based on `fhir2.base.template#0.1.0`; use a recent Publisher (tested with 2.3.4) and validator
+the local `dhroxy-template`, based on `fhir2.base.template#0.1.0`; use a recent Publisher (tested with 2.3.5) and validator
 (tested with 6.9.5). `input/ignoreWarnings.txt` contains no suppression rules: no validation
 messages are suppressed. Offline builds can use `-tx n/a`, with incomplete terminology
 verification reported in the QA output.
@@ -62,7 +62,11 @@ missing-image error that offline builds did not expose.
 Edit the local theme, not the Publisher-generated `template/` or `output/` folders.
 The local `fragment-pagebegin.html` overrides the header status markup from the pinned
 base template so the title, release label, version, and jurisdiction form a centred
-block. Keep this override in sync when upgrading `fhir2.base.template`.
+block. The theme also overrides the Markdown page include, profile/history layouts, and search
+page to fix heading hierarchy, a duplicate unclosed heading, and stray closing tags in
+`fhir2.base.template#0.1.0`. Authored Markdown pages omit their top-level title because
+the page include supplies it; the home page supplies its own hero heading. Keep these
+overrides in sync when upgrading the base template.
 
 ## Scope and maintenance
 

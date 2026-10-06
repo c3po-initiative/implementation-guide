@@ -1,5 +1,3 @@
-# Conformance and known gaps
-
 ## How to interpret the artifacts
 
 Patient, Organization, Observation, Condition, Encounter, DiagnosticReport, and

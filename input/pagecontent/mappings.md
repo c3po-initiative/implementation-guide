@@ -1,5 +1,3 @@
-# Resource mappings
-
 Paths below are the literals in `SundhedClient.kt`. Most use upstream GET; appointment
 search uses upstream POST. Mapper output is described separately from the HAPI-generated
 wire envelope. Fields not populated by these mappings retain base FHIR optionality and

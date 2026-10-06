@@ -1,5 +1,3 @@
-# Identifiers and terminology
-
 These are the literal namespaces used by dhroxy. A URI in the source code is not
 evidence that its owner publishes a corresponding CodeSystem, NamingSystem, or
 StructureDefinition. This guide does not mint definitions under sundhed.dk's authority

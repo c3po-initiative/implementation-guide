@@ -7,7 +7,7 @@
 The FHIR servlet is mounted at `/fhir`. Clinical access is scoped by the upstream
 session; the proxy has no local clinical persistence or built-in authentication.
 
-This draft documents base source commit `d1d4c2fe0651bb576fa9246cae85674d0b8cddf8`
+This draft documents base source commit `3fe51bef5c4e31527dd0445745e12acfaea9203e`
 plus the local mapping corrections recorded in [source evidence](provenance.html),
 reviewed on 2026-10-06. Code takes precedence over older README and planning notes.
 The canonical URL is a publication placeholder, not a deployed endpoint or an official

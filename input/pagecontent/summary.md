@@ -1,5 +1,3 @@
-# Patient summary
-
 Invoke `GET [base]/Patient/{id}/$summary`, where the mapper normally uses
 `pat-{cpr}` as the patient ID. The operation returns a FHIR document Bundle directly,
 with Composition as its first entry, a generated identifier, and a timestamp.

@@ -1,5 +1,3 @@
-# API and search behavior
-
 Use `[base] = http://localhost:8080/fhir` for a default local deployment. JSON is the
 configured default; request `Accept: application/fhir+json`. HAPI generates server
 metadata at `[base]/metadata`. The guide's CapabilityStatement is a separate,

@@ -1,5 +1,3 @@
-# Source evidence
-
 Repository: `dhroxy`. Base commit:
 `3fe51bef5c4e31527dd0445745e12acfaea9203e`. Review date: 2026-10-06.
 The initial review used a clean checkout. This revision also documents the local mapping
