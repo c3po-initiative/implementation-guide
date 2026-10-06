@@ -13,7 +13,7 @@ There are no resource create, update, patch, delete, history, or `$docref` handl
 
 | Resource | Declared search parameters | Actual behavior |
 | --- | --- | --- |
-| Patient | `name` (string), `identifier` (token) | Case-insensitive name substring and exact CPR value; identifier system ignored. Searches the person-selection list, which can include delegates. |
+| Patient | `name` (string), `identifier` (token) | Case-insensitive name substring and normalized CPR value; accepts the DK Core CPR system or legacy `urn:dk:cpr`, and system-less searches. Other explicit systems return no matches. Searches the person-selection list, which can include delegates. |
 | Observation | `date` (date), `category` (token) | Category routes to labs or home measurements; only the first category is used. See below. No `code` or `patient` filter. |
 | Condition | None | Combines diagnoses and e-journal course diagnoses. |
 | Encounter | None | Retrieves contact periods for the available e-journal courses. |
@@ -24,7 +24,7 @@ There are no resource create, update, patch, delete, history, or `$docref` handl
 | ImagingStudy | `identifier` (token), `study` (token) | Values select referral and study upstream; otherwise list and expand referrals. Token systems ignored. |
 | DiagnosticReport | `identifier` (token), `study` (token) | Same upstream selectors as ImagingStudy. Only reports survive provider filtering. |
 | Appointment | `date` (date) | Upstream date window followed by local filtering on appointment start. |
-| Organization | `identifier` (token) | CVR when system contains `cvr` or value has eight characters; otherwise parses integer organization ID. CVR alone filters the resolved GP organization, not a national directory search. |
+| Organization | `identifier` (token) | CVR when system is `http://cvr.dk` or legacy `urn:dk:cvr`; a system-less eight-character value also means CVR, otherwise an integer organization ID. Unsupported explicit systems do not match. CVR alone filters the resolved GP organization, not a national directory search. |
 | CarePlan | None | All plans returned by the session-scoped upstream source. |
 | ServiceRequest | None | Active and earlier referrals. |
 
@@ -69,9 +69,7 @@ fallback headers. Incoming values take precedence. Typical session headers inclu
 `x-queueit-ajaxpageurl`. Configuration can change this behavior.
 
 Patient search filters do not switch the upstream clinical session. There is no general
-`patient` search parameter. Logical references such as
-`https://www.sundhed.dk/patient|current` identify the current session context, not a
-globally stable patient. Consumers must preserve that context when storing or combining data.
+`patient` search parameter. Clinical-session services resolve CPR through the journal overview using the same forwarded headers; unavailable identity becomes a Patient reference with data-absent-reason `unknown`. No `current` identifier is emitted. Keep the session stable throughout a request and never merge unidentified resources across patients.
 Use a trusted deployment boundary with transport protection; this guide does not
 declare an OAuth or SMART flow that the implementation does not have.
 

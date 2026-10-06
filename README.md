@@ -71,7 +71,7 @@ and custom SearchParameters. `input/pagecontent/` contains the human-readable gu
 `source-manifest.json` records source hashes; `scripts/check-guide.py --source ../dhroxy`
 also checks that source files have not drifted since the review.
 
-Profiles are draft conformance targets grounded in the mappers. They preserve R4
+Profiles are draft conformance targets grounded in the mappers. Seven resource profiles inherit DK Core 3.7.0; see the conformance page for scope and deferred mappings. They preserve R4
 requirements even where current mapper output violates them. Synthetic examples
 illustrate those targets and are **not captured server responses**. This guide does
 not assert conformance to IPS, IPA, DK Core, or to its own profiles for all server output.

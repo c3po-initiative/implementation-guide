@@ -1,7 +1,7 @@
 # Source evidence
 
 Repository: `dhroxy`. Base commit:
-`d1d4c2fe0651bb576fa9246cae85674d0b8cddf8`. Review date: 2026-10-06.
+`3fe51bef5c4e31527dd0445745e12acfaea9203e`. Review date: 2026-10-06.
 The initial review used a clean checkout. This revision also documents the local mapping
 corrections listed in `source-manifest.json` under `workingTreeChanges`, applied after
 the base commit. File digests describe that reviewed working tree, not the unmodified
@@ -39,6 +39,7 @@ They are not fixtures extracted from a production session or evidence of output 
 
 ## External specifications
 
+* [DK Core 3.7.0](https://hl7.dk/fhir/core/)
 * [FHIR R4 ImplementationGuide](https://hl7.org/fhir/R4/implementationguide.html)
 * [FHIR R4 REST API](https://hl7.org/fhir/R4/http.html)
 * [FHIR R4 documents](https://hl7.org/fhir/R4/documents.html)
@@ -46,5 +47,4 @@ They are not fixtures extracted from a production session or evidence of output 
 * [FHIR Shorthand and SUSHI](https://fshschool.org/docs/)
 
 External specifications define the standard; the source files establish dhroxy behavior.
-Local identifier namespaces are recorded as observed and are not normalized to a
-different implementation guide without evidence.
+CPR and CVR systems are aligned with DK Core. Source-local clinical terminology remains unchanged until a verified mapping is available.

@@ -6,8 +6,8 @@ Usage: #example
 * id = "pat-example"
 * text.status = #generated
 * text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">Synthetic example. Not for clinical use.</div>"
-* identifier[0].system = "urn:dk:cpr"
-* identifier[0].value = "0000000000"
+* identifier[cpr].system = "urn:oid:1.2.208.176.1.2"
+* identifier[cpr].value = "0101010000"
 * name[0].family = "Eksempel"
 * name[0].given[0] = "Test"
 
@@ -27,6 +27,8 @@ Usage: #example
 * effectiveDateTime = "2026-10-01T09:00:00+02:00"
 * valueQuantity.value = 5.2
 * valueQuantity.unit = "mmol/L"
+* valueQuantity.system = "http://unitsofmeasure.org"
+* valueQuantity.code = #mmol/L
 * referenceRange[0].text = "Synthetic reference interval"
 
 Instance: HomeExample
@@ -41,11 +43,12 @@ Usage: #example
 * category[home].coding[0].system = "http://terminology.hl7.org/CodeSystem/observation-category"
 * category[home].coding[0].code = #vital-signs
 * code.text = "Body weight"
-* subject.identifier.system = "https://www.sundhed.dk/patient"
-* subject.identifier.value = "current"
+* subject.reference = "Patient/pat-example"
 * effectiveDateTime = "2026-10-01T08:00:00+02:00"
 * valueQuantity.value = 70
 * valueQuantity.unit = "kg"
+* valueQuantity.system = "http://unitsofmeasure.org"
+* valueQuantity.code = #kg
 
 Instance: ConditionExample
 InstanceOf: DhroxyCondition
@@ -147,8 +150,7 @@ Usage: #example
 * text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">Synthetic example. Not for clinical use.</div>"
 * status = #completed
 * vaccineCode.text = "Synthetic vaccine"
-* patient.identifier.system = "https://www.sundhed.dk/patient"
-* patient.identifier.value = "current"
+* patient.reference = "Patient/pat-example"
 * occurrenceDateTime = "2026-09-01T10:00:00+02:00"
 * identifier[0].system = "https://www.sundhed.dk/vaccination/id"
 * identifier[0].value = "123"
@@ -185,6 +187,8 @@ Usage: #example
 * imagingStudy[0].reference = "ImagingStudy/img-example"
 * conclusion = "Synthetic report; no clinical findings asserted."
 
+* subject.reference = "Patient/pat-example"
+
 Instance: AppointmentExample
 InstanceOf: DhroxyAppointment
 Title: "Appointment — synthetic example"
@@ -208,8 +212,8 @@ Usage: #example
 * id = "org-example"
 * text.status = #generated
 * text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">Synthetic example. Not for clinical use.</div>"
-* identifier[0].system = "urn:dk:cvr"
-* identifier[0].value = "00000000"
+* identifier[CVR-ID].system = "http://cvr.dk"
+* identifier[CVR-ID].value = "00000000"
 * name = "Synthetic Clinic"
 * address[0].city = "Example City"
 * address[0].country = "DK"
@@ -225,8 +229,7 @@ Usage: #example
 * status = #active
 * intent = #plan
 * title = "Synthetic follow-up plan"
-* subject.identifier.system = "https://www.sundhed.dk/patient"
-* subject.identifier.value = "current"
+* subject.reference = "Patient/pat-example"
 
 Instance: ReferralExample
 InstanceOf: DhroxyServiceRequest
@@ -238,8 +241,7 @@ Usage: #example
 * text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">Synthetic example. Not for clinical use.</div>"
 * status = #active
 * intent = #order
-* subject.identifier.system = "https://www.sundhed.dk/patient"
-* subject.identifier.value = "current"
+* subject.reference = "Patient/pat-example"
 * code.text = "Synthetic specialty referral"
 * identifier[0].system = "https://www.sundhed.dk/henvisning"
 * identifier[0].value = "2026-10-01-example-specialty-example-clinic"
@@ -260,6 +262,7 @@ Instance: SummaryPatient
 InstanceOf: DhroxyPatient
 Usage: #inline
 * id = "11111111-1111-4111-8111-111111111111"
+* identifier[cpr].value = "0101010000"
 * name.text = "Synthetic Patient"
 * text.status = #generated
 * text.div = "<div xmlns=\"http://www.w3.org/1999/xhtml\">Synthetic patient.</div>"

@@ -1,15 +1,15 @@
 Profile: DhroxyPatient
-Parent: Patient
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-patient
 Id: dhroxy-patient
 Title: "Dhroxy Patient"
 Description: "Draft Patient conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
-* identifier ^short = "CPR uses urn:dk:cpr when present."
+* identifier ^short = "CPR uses urn:oid:1.2.208.176.1.2 when present."
 * name ^short = "Source name split at its last space; no inferred birth date or gender."
 
 Profile: DhroxyObservation
-Parent: Observation
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-observation
 Id: dhroxy-observation
 Title: "Dhroxy Observation"
 Description: "Draft Observation conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
@@ -20,7 +20,7 @@ Description: "Draft Observation conformance target based on dhroxy mappings. Cur
 * value[x] ^short = "Numeric quantity or textual result."
 
 Profile: DhroxyCondition
-Parent: Condition
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-condition
 Id: dhroxy-condition
 Title: "Dhroxy Condition"
 Description: "Draft Condition conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
@@ -31,7 +31,7 @@ Description: "Draft Condition conformance target based on dhroxy mappings. Curre
 * clinicalStatus ^short = "Active without an end date; resolved otherwise."
 
 Profile: DhroxyEncounter
-Parent: Encounter
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-encounter
 Id: dhroxy-encounter
 Title: "Dhroxy Encounter"
 Description: "Draft Encounter conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
@@ -61,7 +61,7 @@ Description: "Draft MedicationStatement conformance target based on dhroxy mappi
 * ^status = #draft
 * id 1..1
 * medication[x] ^short = "Medication text, optionally ATC and active-substance coding."
-* subject ^short = "Session-scoped current patient logical reference."
+* subject ^short = "Clinical-session CPR reference, or explicit unknown identity."
 * dosage ^short = "Source dosage and administration text."
 * medication[x] only CodeableConcept
 
@@ -73,7 +73,7 @@ Description: "Draft MedicationRequest conformance target based on dhroxy mapping
 * ^status = #draft
 * id 1..1
 * medication[x] ^short = "Ordination medication or prescription product description."
-* subject ^short = "Session-scoped current patient logical reference."
+* subject ^short = "Clinical-session CPR reference, or explicit unknown identity."
 * identifier ^short = "Ordination, drug-medication, or prescription identifiers."
 * intent = #order
 * medication[x] only CodeableConcept
@@ -86,7 +86,7 @@ Description: "Draft Immunization conformance target based on dhroxy mappings. Cu
 * ^status = #draft
 * id 1..1
 * vaccineCode ^short = "Source vaccine text."
-* patient ^short = "Session-scoped current patient logical reference."
+* patient ^short = "Clinical-session CPR reference, or explicit unknown identity."
 * occurrence[x] ^short = "Effectuated date; required by R4 even if upstream omits it."
 
 Profile: DhroxyImagingStudy
@@ -96,12 +96,12 @@ Title: "Dhroxy ImagingStudy"
 Description: "Draft ImagingStudy conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
-* subject ^short = "Session-scoped current patient logical reference."
+* subject ^short = "Clinical-session CPR reference, or explicit unknown identity."
 * series.instance.sopClass ^short = "Required by R4 when an instance is present; mapper omits it."
 * status = #available
 
 Profile: DhroxyDiagnosticReport
-Parent: DiagnosticReport
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-diagnostic-report
 Id: dhroxy-diagnosticreport
 Title: "Dhroxy DiagnosticReport"
 Description: "Draft DiagnosticReport conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
@@ -123,13 +123,13 @@ Description: "Draft Appointment conformance target based on dhroxy mappings. Cur
 * status = #booked
 
 Profile: DhroxyOrganization
-Parent: Organization
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-organization
 Id: dhroxy-organization
 Title: "Dhroxy Organization"
 Description: "Draft Organization conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
-* identifier ^short = "CVR identifier uses urn:dk:cvr."
+* identifier ^short = "CVR identifier uses http://cvr.dk."
 * name ^short = "Display name, name, or generated fallback."
 
 Profile: DhroxyCarePlan
@@ -139,20 +139,20 @@ Title: "Dhroxy CarePlan"
 Description: "Draft CarePlan conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
-* subject ^short = "Session-scoped current patient logical reference."
+* subject ^short = "Clinical-session CPR reference, or explicit unknown identity."
 * title ^short = "Source title or name; untitled plans are skipped."
 * intent = #plan
 * title 1..1
 
 Profile: DhroxyServiceRequest
-Parent: ServiceRequest
+Parent: http://hl7.dk/fhir/core/StructureDefinition/dk-core-person-servicerequest
 Id: dhroxy-servicerequest
 Title: "Dhroxy ServiceRequest"
 Description: "Draft ServiceRequest conformance target based on dhroxy mappings. Current output limitations are documented in the conformance page."
 * ^status = #draft
 * id 1..1
 * identifier ^short = "Lossless composite of referral date, specialty, and referring clinic."
-* subject ^short = "Session-scoped current patient logical reference."
+* subject ^short = "Clinical-session CPR reference, or explicit unknown identity."
 * intent = #order
 
 Profile: DhroxyLabObservation

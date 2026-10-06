@@ -5,17 +5,17 @@ Invoke `GET [base]/Patient/{id}/$summary`, where the mapper normally uses
 with Composition as its first entry, a generated identifier, and a timestamp.
 The guide publishes a local OperationDefinition to document this behavior.
 
-The service removes `pat-` from the supplied ID and looks for matching demographics
-in the person-selection response. All clinical calls still use the current upstream
-session. The ID does not select or verify that clinical context. A missing demographic
-match does not establish that the requested patient is authorized or that their data
-was retrieved. Callers must not combine mismatched URL and session identities.
+The service obtains the clinical-session CPR from the journal overview before collecting
+other sources. The requested ID must equal `pat-{normalized clinical CPR}`; a mismatch
+or unavailable clinical CPR yields an invalid-request error. The URL cannot select a
+different patient. Demographics are matched by that clinical CPR in the person-selection
+response. All other calls continue to use the same upstream session headers.
 
 ## Document contents
 
 | Content | Source | Composition section code (LOINC) |
 | --- | --- | --- |
-| Patient | Person selection, plus CPR from URL ID | Referenced by Composition.subject |
+| Patient | Person selection matched to clinical-session CPR | Referenced by Composition.subject |
 | Condition | Diagnoses and e-journal courses | `11450-4` problems |
 | MedicationStatement | Medicine-card entries; requires resolved eservices ID in this service | `10160-0` medications |
 | Allergy information | No allergy source is fetched | `48765-2`, `emptyReason=unavailable` |
@@ -27,8 +27,7 @@ Composition has status `final`, type LOINC `60591-5`, and author display
 
 The mapper asserts IPS profile URLs on Composition, Patient, Condition,
 MedicationStatement, Immunization, and laboratory Observation. Those assertions alone
-do not prove IPS conformance. This guide uses base R4-derived summary profiles and
-does not silently inherit IPS or DK Core requirements.
+do not prove IPS conformance. The Composition and document Bundle targets remain R4-derived; the embedded Patient target derives from DK Core. This is not an IPS conformance claim.
 
 ## Observed limitations
 

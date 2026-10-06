@@ -9,7 +9,7 @@ are not implied to be available.
 
 Source: `/app/personvaelgerportal/api/v1/GetPersonSelection`, `personDelegationData`.
 ID is `pat-` plus CPR, source ID, or a random UUID. CPR maps to `identifier` under
-`urn:dk:cpr`. The last word of `name` becomes family, preceding words become given.
+`urn:oid:1.2.208.176.1.2`. CPR is trimmed, hyphens removed, and checked against DK Core’s format; malformed values are omitted. The full source name is retained in `name.text`; the last word also becomes family and preceding words become given.
 `relationType` becomes the external extension documented on the terminology page.
 Birth date, administrative gender, address, and active status are not inferred.
 
@@ -25,16 +25,16 @@ is not the current client path.
 | Requisition ID, laboratory sample number | Separate business `identifier` entries; neither alone uniquely identifies an analyte. |
 | Status code, otherwise status text | `SvarEndeligt` / `KompletSvar` → final; `Foreloebigt` → preliminary; `Annulleret` → cancelled; otherwise unknown. |
 | First examination's name and analysis code | `code.text`, local `code.coding`; fallback text is analysis type, result type, then value type. |
-| Quantitative findings row 1, columns 9 and 10 | Decimal `valueQuantity.value` and optional unit; failed numeric conversion falls through to text. |
+| Quantitative findings row 1, columns 9 and 10 | Decimal Quantity when a unit is available; recognized units gain UCUM system/code. A number without a unit is preserved as valueString; failed numeric conversion falls through to source text. |
 | Conclusion, diagnosis, microscopy, macroscopy HTML, then raw value | First available cleaned value becomes `valueString`. |
 | Reference interval text | `referenceRange.text`. |
 | Result date, otherwise collection time | `effectiveDateTime`; result date also becomes `issued`. |
 | Requisition organization, otherwise examiner | `performer.display`. |
-| Requisition CPR and patient name | `subject.identifier` and display; missing or blank CPR omits the identifier. No synthetic value is placed in the CPR namespace. |
+| Requisition CPR and patient name | `subject.identifier` and display; missing or malformed CPR omits the identifier and uses data-absent-reason unknown. No synthetic value is placed in the CPR namespace. |
 | Analysis guidance and pathology text | `note`; HTML is stripped with limited entity decoding. |
 
 All lab observations use category `laboratory`, including microbiology and pathology.
-There is no laboratory DiagnosticReport mapper and no guaranteed UCUM encoding.
+There is no laboratory DiagnosticReport mapper. UCUM coding is limited to an explicit allowlist; unfamiliar units retain their source text.
 
 ## Observation: home measurements
 
@@ -42,7 +42,7 @@ Source: `/app/hjemmemaalingerborger/api/v1/maalinger`, documents collection.
 ID is `hm-` plus sanitized date and type/name. Status is final and category vital-signs.
 Type or name becomes code text; date becomes effectiveDateTime. A numeric value with
 a unit becomes Quantity; otherwise value and unit are joined as a string. Source is
-preserved in a note. Subject is the `current` logical patient. Blank type falls back to a nonblank name. If neither is available, `code` carries
+preserved in a note. Subject uses the clinical-session patient context described below. Blank type falls back to a nonblank name. If neither is available, `code` carries
 the standard data-absent-reason extension with value `unknown`; the measurement value
 is retained. This is not a validated Vital Signs profile.
 
@@ -88,9 +88,7 @@ populate dosage, reasonCode, effectivePeriod, and dateAsserted.
 
 Card status maps active/missing → active, completed → completed, stopped/ended → stopped,
 entered-in-error → entered-in-error, otherwise unknown. Detail status instead maps
-negative consent → not-taken, otherwise active. Both standalone branches populate subject using the session-scoped logical
-patient identifier (`https://www.sundhed.dk/patient`, value `current`). This is not a
-globally usable patient identity. Offsetless card dates are interpreted as UTC; unparsable dates are omitted.
+negative consent → not-taken, otherwise active. Both standalone branches obtain subject from the clinical-session patient context described below. Offsetless card dates are interpreted as UTC; unparsable dates are omitted.
 
 ## MedicationRequest
 
@@ -104,8 +102,7 @@ Prescription status maps afsluttet → completed; aktiv, åben, open → active;
 unknown. Product name, strength, and form are joined for medication text. Prescription
 and ordination IDs are identifiers. Prescription/created date maps to authoredOn,
 cause to note, dosage to dosageInstruction, and validity dates to dispenseRequest.validityPeriod.
-Both branches populate subject using the session-scoped logical patient identifier
-(`https://www.sundhed.dk/patient`, value `current`). Prescription retrieval is best effort.
+Both branches obtain subject from the clinical-session patient context described below. Prescription retrieval is best effort.
 
 ## Immunization
 
@@ -113,7 +110,7 @@ Source: `/app/vaccination/api/v1/effectuatedvaccinations/`; optional history fro
 `/app/vaccination/api/v1/effectuatedvaccinations/{id}/history`.
 ID is `imm-{vaccinationIdentifier}`; the same key is retained as an identifier.
 Vaccine name maps to vaccineCode text. Effectuated timestamp populates occurrenceDateTime
-and recorded; performer becomes actor display. Patient is the logical `current` value.
+and recorded; performer becomes actor display. Patient uses the clinical-session context described below.
 Coverage duration, self-created flag, negative consent, and optional history become notes.
 Negative consent or inactive status → not-done; active → completed; unknown flags can
 leave status unset. Planned vaccinations are not mapped.
@@ -129,14 +126,14 @@ aggregating results.
 ImagingStudy ID is `img-{examination ID or image ID}`; status is available. Examination
 date/name populate started/description. A minimal series and instance use source IDs
 as UIDs, optional modality code, body-site display, and image title. These are not
-verified DICOM UIDs. Subject is the session-scoped logical current patient. SOP class is still
+verified DICOM UIDs. Subject uses the clinical-session patient context described below. SOP class is still
 missing; modality may also be missing.
 
 DiagnosticReport ID is `dr-{report ID or referral ID}`; status is final, category uses
 the observation-category imaging code, and code is report name/type or Billedbeskrivelse.
 Date maps to effectiveDateTime, publication/date to issued, description to conclusion,
 producer to performer display, and requester to resultsInterpreter display when retained.
-The mapper creates study references and included studies; the provider retains reports
+DiagnosticReport now also supplies subject through the clinical-session context. The mapper creates study references and included studies; the provider retains reports
 only. No DICOM retrieval endpoint or image pixels are exposed.
 
 ## Appointment
@@ -154,7 +151,7 @@ on source availability, so empty input can violate R4 requirements.
 
 Sources: `/api/minlaegeorganization/` to resolve the current GP organization and
 `/api/core/organisation/{id}` for details. ID is `org-{organizationId}` or a UUID fallback.
-CVR maps to identifier. Display name, name, or a generated fallback becomes name.
+CVR maps to identifier under `http://cvr.dk`. The upstream organization ID is not treated as a SOR identifier. Display name, name, or a generated fallback becomes name.
 Category becomes text and a lowercase/hyphenated local code. Address joins street,
 house number, floor, door, and maps city/postal code/municipality with country DK.
 Homepage becomes URL telecom and lastUpdated becomes meta.lastUpdated.
@@ -165,7 +162,7 @@ Source: `/app/planerportalborger/api/v1/plans/`. Entries without title/name are 
 ID is `cp-{title and start date}`. Status maps active/aktiv, completed/afsluttet,
 draft/kladde, revoked/annulleret; otherwise unknown. Intent is plan. Description,
 parseable start/end period, and organization as author display are retained. Subject
-is the logical `current` patient. Unparseable period dates are silently omitted.
+uses the clinical-session patient context described below. Unparseable period dates are silently omitted.
 
 ## ServiceRequest
 
@@ -176,7 +173,7 @@ capped to 64 characters with a hash on overflow; the full composite is also an i
 Specialty becomes code text; referral type/code becomes category; referring clinic and
 recipient name become requester/performer display. Referral date maps to authoredOn
 and occurrencePeriod.start, expiry to occurrencePeriod.end. Diagnoses and cleaned clinical
-text become notes. Subject is the logical `current` patient.
+text become notes. Subject uses the clinical-session patient context described below.
 
 ## Supporting and dormant mappings
 
@@ -186,3 +183,26 @@ MedicationOverviewMapper can generate detail or count-component Observations fro
 ordination/prescription overviews, including local systems under
 `https://www.sundhed.dk/medicinkort/`; its service is not routed by ObservationProvider.
 Planning-only resources are inventoried in the [conformance register](conformance.html).
+
+## Shared Danish identifiers, units, and patient context
+
+`DanishFhir` centralizes CPR normalization, DK Core identifier systems, explicit unknown
+patient references, and conservative UCUM coding. Source-local laboratory and diagnosis
+codes remain local until their terminology identity is verified. No LOINC, NPU, SKS,
+SOR identifier, or document author is inferred from a label or an internal source ID.
+
+Medication, vaccination, imaging, home-measurement, care-plan, and referral services
+resolve missing patient identity from `forloebsoversigt.personNummer` using the same
+forwarded session headers. The dormant medication-overview service does likewise.
+They do not select the first person from the delegation list. Empty bundles and resources
+with an existing reference or identifier do not trigger this extra lookup. If the clinical
+CPR is unavailable, malformed, or the lookup fails with a client/HTTP exception, the
+reference has type Patient and data-absent-reason `unknown`, with no fabricated identifier.
+The individual mapper layer uses that unknown reference until the service resolves it.
+This is not an atomic snapshot across upstream calls; callers must keep the clinical
+session stable during collection.
+
+The browser exporter also emits the standard CPR/CVR systems. It derives CPR from
+clinical payloads, rejects conflicting journal/laboratory identities, and no longer
+falls back to a delegated person's identity. Its independent JavaScript mapping is not
+covered by the Kotlin profile-validation samples.

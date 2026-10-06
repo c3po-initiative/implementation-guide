@@ -30,9 +30,8 @@ sundhed.dk, HL7 Denmark, or national implementation guide.
 
 The CapabilityStatement describes **implemented interaction support**. Profiles describe
 **draft resource conformance targets** based on populated fields, retaining mandatory
-FHIR R4 elements. They do not certify current server output. Optional mapped fields
-remain optional; the profiles do not introduce a blanket Must Support obligation.
-An element required by base R4 remains required even if an upstream field is missing.
+FHIR R4 elements and, for seven resource types, DK Core 3.7.0 constraints. They do not certify current server output or introduce a blanket Must Support obligation.
+An element required by R4 or the inherited DK Core profile remains required even if an upstream field is missing.
 The gap register identifies those cases rather than weakening the standard.
 
 Examples use invented names, identifiers, and clinical values. They add explicitly
