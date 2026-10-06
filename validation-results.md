@@ -95,3 +95,13 @@ package exists. These do not appear as resource or HTML QA errors; the standard
 
 The published main-branch report was rechecked during this work and still described
 the earlier 19:43 UTC build. These corrections are local until committed and built by CI.
+
+## Root language redirect
+
+The `fhir2.base.template#0.1.0` language script returned before its fallback when the
+browser language did not match the first published language. A local asset override
+corrects that behavior, retains query strings and anchors, and handles directory URLs.
+Seven executable JavaScript cases passed. The generated root HTML and generated script
+were also exercised together for `da-DK`, resolving the main-branch root URL to
+`branches/main/en/index.html`. Publisher 2.3.5 confirmed the override is included in
+the site; QA remains **0 errors, 20 warnings, 37 information messages, 0 broken links**.

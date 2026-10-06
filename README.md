@@ -67,6 +67,11 @@ page to fix heading hierarchy, a duplicate unclosed heading, and stray closing t
 `fhir2.base.template#0.1.0`. Authored Markdown pages omit their top-level title because
 the page include supplies it; the home page supplies its own hero heading. Keep these
 overrides in sync when upgrading the base template.
+The local `assets/js/lang-redirects.js` override fixes the base template's early-return
+bug: unsupported browser languages fall back to the first published language (currently
+English), while query strings and anchors are preserved. The Publisher's root
+`index.html` therefore redirects to `en/index.html`, including for Danish browsers.
+
 
 ## Scope and maintenance
 
